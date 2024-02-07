@@ -1,0 +1,10 @@
+# ninja log v5
+4	4518	7289946388302749	CMakeFiles/TP-Reco.dir/src/main_projet.cpp.obj	330b22d88d2c67bd
+36	4662	7289946389758849	CMakeFiles/TP-Reco.dir/src/reco_lignes.cpp.obj	bd2169ea22fd6a0a
+17	1317	7289946356447710	CMakeFiles/TP-Reco.dir/src/text_size.cpp.obj	db8d5df7b357c951
+7	286	7289948225814333	build.ninja	bcf044e07bcf1acd
+3157	3383	7264142277827062	Projet_OpenCV_CMake.exe	8e1996fbb9b2955a
+23	5253	7289946395673038	CMakeFiles/TP-Reco.dir/src/reco_barycentre.cpp.obj	eef9a95de141d8fa
+11	1531	7289946358561861	CMakeFiles/TP-Reco.dir/src/icon_label.cpp.obj	ec56ae3f9fdb2092
+30	3495	7289946378070266	CMakeFiles/TP-Reco.dir/src/redresser_image.cpp.obj	ea97e4cbd0424bbf
+5254	6178	7289946404923571	TP-Reco.exe	59b41d6dcd450feb
