@@ -55,7 +55,7 @@ int main (void){
                 list_nb_contours.push_back(nb_contours(".//..//Exemples_icones/" + nom));
 
                 //Ajoute à la liste le centre de masse
-                list_nb_contours.push_back(reco_barycentre(".//..//Exemples_icones/" + nom));
+                list_center_of_mass.push_back(reco_barycentre(".//..//Exemples_icones/" + nom));
             }
         }
         // Ferme le dossier
@@ -77,6 +77,7 @@ int main (void){
 
         //Supprime le premier élément des listes
         list_nb_contours.pop_front();
+        list_center_of_mass.pop_front();
     }
 
     //termine le programme lorsqu'une touche est frappee
