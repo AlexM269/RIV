@@ -44,8 +44,6 @@ cv::Mat reco_barycentre(const string imName){
     // Dessine les contours sur l'image
     cv::drawContours(im, contours, -1, cv::Scalar(0, 255, 0), 2);
 
-    std::cout << "Nombre de contours de l'imagette : "<<to_string(contours.size())<< std::endl;
-
     cv::Moments moments0 = cv::moments(contours[0]);
 
     double centerX;

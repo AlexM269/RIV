@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "TP-Reco::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TP-Reco-Debug-f232a685ec1b846ec6c4.json",
+					"jsonFile" : "target-TP-Reco-Debug-662aa48ee4d3ad5917c5.json",
 					"name" : "TP-Reco",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Alexandre DEPRUGNEY/Documents/4INFO/Reco Images et Vid\u00e9os/TP_Reco/cmake-build-debug-mingw",
-		"source" : "C:/Users/Alexandre DEPRUGNEY/Documents/4INFO/Reco Images et Vid\u00e9os/TP_Reco"
+		"build" : "C:/Users/Alexandre DEPRUGNEY/Documents/GitHub/RIV/TP_Reco/cmake-build-debug-mingw",
+		"source" : "C:/Users/Alexandre DEPRUGNEY/Documents/GitHub/RIV/TP_Reco"
 	},
 	"version" : 
 	{
