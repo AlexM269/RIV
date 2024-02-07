@@ -8,3 +8,11 @@
 11	1531	7289946358561861	CMakeFiles/TP-Reco.dir/src/icon_label.cpp.obj	ec56ae3f9fdb2092
 30	3495	7289946378070266	CMakeFiles/TP-Reco.dir/src/redresser_image.cpp.obj	ea97e4cbd0424bbf
 5254	6178	7289946404923571	TP-Reco.exe	59b41d6dcd450feb
+45	1712	7289973311372308	CMakeFiles/TP-Reco.dir/src/text_size.cpp.obj	76f3f36199fa59d6
+38	1771	7289973311960740	CMakeFiles/TP-Reco.dir/src/icon_label.cpp.obj	872afb98514933c
+32	2836	7289973322632199	CMakeFiles/TP-Reco.dir/src/redresser_image.cpp.obj	d9cc3072681ff9e5
+51	2955	7289973323819016	CMakeFiles/TP-Reco.dir/src/reco_barycentre.cpp.obj	7e46d5b71d1d0849
+5	2974	7289973324018480	CMakeFiles/TP-Reco.dir/src/main_projet.cpp.obj	271cfc9834f54d2d
+65	3006	7289973324347598	CMakeFiles/TP-Reco.dir/src/nb_contours.cpp.obj	c5e4ee1053cd3c5b
+58	3015	7289973324437358	CMakeFiles/TP-Reco.dir/src/reco_lignes.cpp.obj	aa33b713b4207bcb
+3016	3307	7289973327291926	TP-Reco.exe	9e0b2480f7e8b5b9

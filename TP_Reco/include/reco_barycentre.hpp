@@ -5,6 +5,6 @@
 #include "opencv2/highgui.hpp"
 using namespace cv;
 
-cv::Mat reco_barycentre(const std::string imName);
+cv::Point reco_barycentre(const std::string imName);
 
 #endif //PROJET_OPENCV_CMAKE_RECO_BARYCENTRE_HPP
