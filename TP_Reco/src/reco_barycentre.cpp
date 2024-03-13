@@ -13,7 +13,7 @@ using namespace std;
 #include "opencv2/highgui.hpp"
 using namespace cv;
 
-cv::Point reco_barycentre(const string imName){
+cv::Mat reco_barycentre2(const string imName){
 
     // Load image
     Mat im = imread(imName);
@@ -43,6 +43,8 @@ cv::Point reco_barycentre(const string imName){
 
     // Dessine les contours sur l'image
     cv::drawContours(im, contours, -1, cv::Scalar(0, 255, 0), 2);
+
+    std::cout << "Nombre de contours de l'imagette : "<<to_string(contours.size())<< std::endl;
 
     cv::Moments moments0 = cv::moments(contours[0]);
 
@@ -85,18 +87,15 @@ cv::Point reco_barycentre(const string imName){
         }
     }
 
+
     // Affiche les coordonnées du centre de masse
     std::cout << "Le centre de masse de "<< imName <<" a pour coordonnees : (" << centerX << ", " << centerY << ")" << std::endl;
 
-    // Enregistre le centre de masse dans res
-    cv::Point res = cv::Point (centerX,centerY);
-
     // Dessine le centre de masse sur l'image
-    cv::circle(im, res, 5, cv::Scalar(0, 0, 255), -1);
+    cv::circle(im, cv::Point(centerX, centerY), 5, cv::Scalar(0, 0, 255), -1);
 
-    // Visualisation de l'image avec le centre de masse
-    //imshow("Extraction du centre de masse", im);
+    imshow("Extraction du centre de masse", im);
 
-    return res;
+    return im;
 
 };

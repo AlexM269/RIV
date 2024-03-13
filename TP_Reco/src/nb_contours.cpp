@@ -15,7 +15,7 @@ using namespace std;
 #include "opencv2/highgui.hpp"
 using namespace cv;
 
-int nb_contours (const std::string imName){
+cv::Mat nb_contours (const std::string imName){
     // Load image
     Mat im = imread(imName);
     if(im.data == nullptr){
@@ -47,5 +47,4 @@ int nb_contours (const std::string imName){
 
     std::cout << "Nombre de contours de l'imagette : "<<to_string(contours.size())<< std::endl;
 
-    return contours.size();
 }
