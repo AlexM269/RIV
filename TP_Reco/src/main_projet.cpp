@@ -24,23 +24,33 @@ using namespace cv;
 #include "feature_extraction.hpp"
 #include "circles.hpp"
 #include "feature_size.hpp"
+#include "zoning.h"
 
 int main() {
 
     int i = 0;
 
-    const char* dossier = ".//..//out";
-    //const char* dossier = ".//..//Exemples_icones";
+    //const char* dossier = ".//..//out";
+    const char* dossier = ".//..//Exemples_icones";
 
     // Ouvrir le dossier
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFF.arff");
+    std::ofstream fichierARFF("./../FichierARFFex.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
         fichierARFF<<"@ATTRIBUTE NbPixelsNoirs numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_1 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_2 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_3 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_4 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_5 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_6 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_7 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_8 numeric\n";
+        fichierARFF<<"@ATTRIBUTE NbPixelsNoirs_9 numeric\n";
         fichierARFF<<"@ATTRIBUTE Hauteur numeric\n";
         fichierARFF<<"@ATTRIBUTE Largeur numeric\n";
         fichierARFF<<"@ATTRIBUTE Air numeric\n";
@@ -103,25 +113,47 @@ int main() {
                     std::string cropped_image = "../../TP_Reco/cropped_image.png";
                     cv::imwrite(cropped_image,cropped_image_mat);
 
-                    cv::imshow("Image rognee",cropped_image);
+                    //Génération des différentes zones de l'image et enregistrement dans le fichier temporaire "zoning"
+                    vector<cv::Mat> zones = zoning::extract_zones(cropped_image,3);
+                    int i = 1;
+                    for (cv::Mat zone : zones){
+                        nom = to_string(i);
+                        i++;
+                        std::string path = "../../TP_Reco/zoning/zone_"+nom+".png";
+                        cv::imwrite(path,zone);
+                    }
 
-                    //Stocke le nombre de pixels noirs
-                    vector<int> count = countPixel(cropped_image);
+                    //Stocke le nombre de pixels noirs de l'image entière puis dans chaque zone
+                    int count = countPixel(cropped_image)[1];
+                    vector<int> counts;
+                    for (int j = 1; j<10;j++){
+                        std::string path = "../../TP_Reco/zoning/zone_"+ to_string(j)+".png";
+                        int a_count = countPixel (path)[1];
+                        counts.push_back(a_count);
+                    }
 
-                    //Stocke la hauteur et la largeur de l'image
-                    pair<int, int> size = extractSize(image);
+                    //Stocke la hauteur et la largeur
+                    pair<int, int> size = new_image.first;
 
                     //Stocke l'aire de l'image
                     double area = air(image);
 
                     // Stocke les coordonnées du barycentre sous la forme d'un point
-                    Point barycentre = reco_barycentre(image);
+                    Point barycentre = reco_barycentre(cropped_image);
+
+                    vector<Point> barycentres;
+                    for (int j = 1; j<10;j++){
+                        std::string path = "../../TP_Reco/zoning/zone_"+ to_string(j)+".png";
+                        Point a_barycentre = reco_barycentre (path);
+                        barycentre.push_back(a_barycentre);
+                    }
+                    
 
                     //Stocke dans une paire le nombre de cercle d'un côté et
                     // un vecteur contenant des array de taille 3 correspondant
                     // à la taille, la coord X et la coord Y de chaque cercle reconnu
                     //Nb de cercle max = 4
-                    array<pair<int, array<int, 3>>,5> cercles = circles::extract_circles(image);
+                    array<pair<int, array<int, 3>>,5> cercles = circles::extract_circles(cropped_image);
                     //cout << "Cercles: " << cercles.first << "," << cercles.second << endl;
 
                     //Stockage des informations données par extract_circles des cercles présents pour chaque zone
@@ -136,7 +168,10 @@ int main() {
 
 
                     //Impression des informations récupérées pour chaque imagette dans le fichier ARFF
-                    fichierARFF << count[1] << "," << size.first << "," << size.second << ","<< area <<","<< barycentre.x << ","<< barycentre.y<<","<<
+                    fichierARFF << count << "," << counts[0] << "," << counts[1] << "," << counts[2] << ","
+                            << counts[3] << "," << counts[4] << "," << counts[5] << ","
+                            << counts[6] << "," << counts[7] << "," << counts[8] << ","
+                    << size.first << "," << size.second << ","<< area <<","<< barycentre.x << ","<< barycentre.y<<","<<
                     cercles_data[0]<< "," << cercles_data[1] << "," << cercles_data[2] << "," << cercles_data[3] << "," <<
                     cercles_data[4]<< "," << cercles_data[5] << "," << cercles_data[6] << "," << cercles_data[7] << "," <<
                     cercles_data[8]<< "," << cercles_data[9] << "," << cercles_data[10] << "," << cercles_data[11] << "," <<

@@ -23,7 +23,8 @@ add_executable(TP-Reco
         src/feature_extraction.cpp
         include/circles.hpp
         src/circles.cpp
-        src/feature_size.cpp)
+        src/feature_size.cpp
+        src/zoning.cpp)
 
 target_link_libraries(TP-Reco ${OpenCV_LIBS})
 

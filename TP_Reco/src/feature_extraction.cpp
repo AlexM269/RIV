@@ -75,9 +75,7 @@ pair<int,int> extractSize(const string& fileIm){
 }
 
 vector<int> countPixel( const string& image) {
-    //Mat im = imread(".//..//Result/accident_001_01_1_3.jpg");
     vector<int> res;
-
 
     Mat im = imread(image);
 
@@ -87,24 +85,19 @@ vector<int> countPixel( const string& image) {
         //system("pause");
         exit(EXIT_FAILURE);
     }
-    //imshow("image de base", im);
 
     Mat gray ;
     cvtColor(im, gray, cv::COLOR_BGR2GRAY);
-    //imshow("image bw",gray);
 
     // Transform it to binary and invert it. White on black is needed.
     Mat bw;
     threshold(gray, bw, 40, 255, THRESH_BINARY_INV | THRESH_OTSU);
-    //imshow("binary", bw);
 
     //vector<Point> black_pixels;   // output, locations of non-zero pixels
     int nbBlack = cv::countNonZero(bw);
 
     int nbPixels = bw.rows * bw.cols;
-    //cout << "Nb pixels: " << nbPixels << endl;
-    //cout << "White pixels: " << nbPixels - nbBlack << endl;
-    //cout << "black pixels: " << nbBlack << endl; // amount of black pixels is returned from the size
+
     res.push_back(nbPixels); res.push_back(nbBlack); res.push_back(nbPixels - nbBlack);
 
     return res;
