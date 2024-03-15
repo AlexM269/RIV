@@ -29,14 +29,14 @@ int main() {
 
     int i = 0;
 
-    //const char* dossier = ".//..//out";
-    const char* dossier = ".//..//Exemples_icones";
+    const char* dossier = ".//..//out";
+    //const char* dossier = ".//..//Exemples_icones";
 
     // Ouvrir le dossier
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFFex.arff");
+    std::ofstream fichierARFF("./../FichierARFF.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
@@ -99,10 +99,14 @@ int main() {
 
                     //Cropping de l'image
                     pair<pair<int,int>,cv::Mat> new_image = feature_size::extract(image);
+                    cv::Mat cropped_image_mat = new_image.second;
+                    std::string cropped_image = "../../TP_Reco/cropped_image.png";
+                    cv::imwrite(cropped_image,cropped_image_mat);
 
+                    cv::imshow("Image rognee",cropped_image);
 
                     //Stocke le nombre de pixels noirs
-                    vector<int> count = countPixel(image);
+                    vector<int> count = countPixel(cropped_image);
 
                     //Stocke la hauteur et la largeur de l'image
                     pair<int, int> size = extractSize(image);
