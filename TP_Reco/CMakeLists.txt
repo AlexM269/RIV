@@ -26,7 +26,9 @@ add_executable(TP-Reco
         src/feature_size.cpp
         src/zoning.cpp
         include/lines.h
-        src/lines.cpp)
+        src/lines.cpp
+        include/rename_file.hpp
+        src/rename_file.cpp)
 
 target_link_libraries(TP-Reco ${OpenCV_LIBS})
 

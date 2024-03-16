@@ -26,19 +26,24 @@ using namespace cv;
 #include "feature_size.hpp"
 #include "zoning.h"
 #include "lines.h"
+#include "rename_file.hpp"
 
 int main() {
-
     int i = 0;
 
     //const char* dossier = ".//..//out";
-    const char* dossier = ".//..//Exemples_icones";
+    //const char* dossier = ".//..//Exemples_icones";
+    const char* dossier = ".//..//final_cropped";
+
+    //Dans le cas du dossier des images de test, on renomme les fichiers des images pour enlever le ".png" en trop
+    rename_file(dossier);
+
 
     // Ouvrir le dossier
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFFex.arff");
+    std::ofstream fichierARFF("./../FichierARFFtest.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
@@ -189,18 +194,18 @@ int main() {
 
                     // Stocke les coordonnées du barycentre sous la forme d'un point
                     Point barycentre = reco_barycentre(cropped_image);
-                    std::cout<<to_string(i)<< ":" << " Avant Barycentre" <<std::endl;
+                    //std::cout<<to_string(i)<< ":" << " Avant Barycentre" <<std::endl;
 
                     vector<Point> barycentres;
                     for (int j = 1; j<10;j++){
                         std::string path = "../../TP_Reco/zoning/zone_"+ to_string(j)+".png";
-                        std::cout<<to_string(j)<< ":" << " Avant reconnaissance" <<std::endl;
+                        //std::cout<<to_string(j)<< ":" << " Avant reconnaissance" <<std::endl;
                         Point a_barycentre = reco_barycentre (path);
-                        std::cout<<to_string(j)<< ":" << " Apres reconnaissance" <<std::endl;
+                        //std::cout<<to_string(j)<< ":" << " Apres reconnaissance" <<std::endl;
 
                         barycentres.push_back(a_barycentre);
                     }
-                    std::cout<<to_string(i)<< ":" << " Apres Barycentre" <<std::endl;
+                    //std::cout<<to_string(i)<< ":" << " Apres Barycentre" <<std::endl;
 
 
                     //Stocke dans une paire le nombre de cercle d'un côté et

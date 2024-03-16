@@ -141,7 +141,6 @@ double air(const string& image){
 
 Point reco_barycentre(const string imName){
 
-
     // Load image
     Mat im = imread(imName);
     if(im.data == nullptr){
@@ -150,8 +149,6 @@ Point reco_barycentre(const string imName){
         //system("pause");
         exit(EXIT_FAILURE);
     }
-
-    //imshow("exemple_init", im);
 
     // Convertit l'image en niveaux de gris
     Mat imGray;
@@ -170,61 +167,83 @@ Point reco_barycentre(const string imName){
 
     // Dessine les contours sur l'image
     drawContours(im, contours, -1, cv::Scalar(0, 255, 0), 2);
-    std::cout<< "Blabla 4 "<<std::endl;
 
-    Moments moments0 = moments(contours[0]);
-    std::cout<< "Blabla 5 "<<std::endl;
+    double centerX = 0;
+    double centerY = 0;
 
-    double centerX;
-    double centerY;
+    if(!contours.empty()) {
+        Moments calculatedMoments;
+        if (contours.size() >= 1) {
+            calculatedMoments = moments(contours[0]);
+        } else if (contours.size() >= 2) {
+            calculatedMoments = moments(contours[1]);
+        } else if (contours.size() >= 3) {
+            calculatedMoments = moments(contours[2]);
+        } else if (contours.size() >= 4) {
+            calculatedMoments = moments(contours[3]);
+        }
 
-    // Renvoie la valeur des moments calculés
-    //std::cout << "moments0.m10 : "<< to_string(moments0.m10) <<"; moments.m01 : " << to_string(moments0.m01) <<"; moments.m00 : " << to_string(moments0.m00) << std::endl;
+        if (calculatedMoments.m00 != 0) { // Utilisez la variable renommée ici
+            // Calcule les coordonnées du centre de masse
+            centerX = calculatedMoments.m10 / calculatedMoments.m00;
+            centerY = calculatedMoments.m01 / calculatedMoments.m00;
+        } else {
+            // Si le moment est toujours nul, on met le centre de masse au centre
+            centerX = im.cols / 2;
+            centerY = im.rows / 2;
+        }
+/*
+        Moments moments0 = moments(contours[0]);
 
-    if(moments0.m10!=0 && moments0.m01!=0 && moments0.m00 != 0){
-        // Calcule les coordonnées du centre de masse
-        centerX = moments0.m10 / moments0.m00;
-        centerY = moments0.m01 / moments0.m00;
-    }
+        std::cout<< "After moment" <<std::endl;
 
-    else if((cv::moments(contours[1])).m10!=0 && (moments(contours[1])).m01!=0 && (moments(contours[1])).m00 != 0){
-        Moments moments1 = moments(contours[1]);
-        //Sinon, calcule le barycentre avec le deuxième contour capté
-        centerX = moments1.m10 / moments1.m00;
-        centerY = moments1.m01 / moments1.m00;
-    }
-    else if((moments(contours[2])).m10!=0 && (moments(contours[2])).m01!=0 && (moments(contours[2])).m00 != 0){
-        Moments moments2 = moments(contours[2]);
-        //Sinon, calcule le barycentre avec le troisième contour capté
-        centerX = moments2.m10 / moments2.m00;
-        centerY = moments2.m01 / moments2.m00;
+
+        // Renvoie la valeur des moments calculés
+        //std::cout << "moments0.m10 : "<< to_string(moments0.m10) <<"; moments.m01 : " << to_string(moments0.m01) <<"; moments.m00 : " << to_string(moments0.m00) << std::endl;
+
+        if(moments0.m10!=0 && moments0.m01!=0 && moments0.m00 != 0){
+            // Calcule les coordonnées du centre de masse
+            centerX = moments0.m10 / moments0.m00;
+            centerY = moments0.m01 / moments0.m00;
+
+        }
+
+        else if((cv::moments(contours[1])).m10!=0 && (moments(contours[1])).m01!=0 && (moments(contours[1])).m00 != 0){
+            Moments moments1 = moments(contours[1]);
+            //Sinon, calcule le barycentre avec le deuxième contour capté
+            centerX = moments1.m10 / moments1.m00;
+            centerY = moments1.m01 / moments1.m00;
+        }
+        else if((moments(contours[2])).m10!=0 && (moments(contours[2])).m01!=0 && (moments(contours[2])).m00 != 0){
+            Moments moments2 = moments(contours[2]);
+            //Sinon, calcule le barycentre avec le troisième contour capté
+            centerX = moments2.m10 / moments2.m00;
+            centerY = moments2.m01 / moments2.m00;
+        }
+        else{
+            Moments moments3 = moments(contours[3]);
+
+            //Sinon, calcule le barycentre avec le troisième contour capté
+            if(!moments3.m00==0){
+                centerX = moments3.m10 / moments3.m00;
+                centerY = moments3.m01 / moments3.m00;
+            }
+                //Si le moment est toujours nul, on met le centre de masse au centre
+            else{
+                centerX = im.cols/2;
+                centerY = im.rows/2;
+            }
+        }
+
     }
     else{
-        Moments moments3 = moments(contours[3]);
-
-        //Sinon, calcule le barycentre avec le troisième contour capté
-        if(!moments3.m00==0){
-            centerX = moments3.m10 / moments3.m00;
-            centerY = moments3.m01 / moments3.m00;
-        }
-            //Si le moment est toujours nul, on met le centre de masse au centre
-        else{
-            centerX = im.cols/2;
-            centerY = im.rows/2;
-        }
+        centerX = 0;
+        centerY = 0;
     }
-
-    // Affiche les coordonnées du centre de masse
-    //std::cout << "Le centre de masse de "<< imName <<" a pour coordonnees : (" << centerX << ", " << centerY << ")" << std::endl;
-
+*/
+    }
     // Enregistre le centre de masse dans res
     Point res = Point (centerX,centerY);
-
-    // Dessine le centre de masse sur l'image
-    circle(im, res, 5, cv::Scalar(0, 0, 255), -1);
-
-    // Visualisation de l'image avec le centre de masse
-    //imshow("Extraction du centre de masse", im);
 
     return res;
 }
