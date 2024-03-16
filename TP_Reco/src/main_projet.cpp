@@ -25,6 +25,7 @@ using namespace cv;
 #include "circles.hpp"
 #include "feature_size.hpp"
 #include "zoning.h"
+#include "lines.h"
 
 int main() {
 
@@ -94,6 +95,30 @@ int main() {
         fichierARFF<<"@ATTRIBUTE 5CercleSize numeric\n";
         fichierARFF<<"@ATTRIBUTE 5CercleX numeric\n";
         fichierARFF<<"@ATTRIBUTE 5CercleY numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_1 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_1 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_1 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_1 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_2 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_2 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_2 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_2 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_3 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_3 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_3 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_3 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_4 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_4 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_4 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_4 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_5 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_5 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_5 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_5 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesX_6 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesY_6 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesAngle_6 numeric\n";
+        fichierARFF<<"@ATTRIBUTE linesLength_6 numeric\n";
         fichierARFF<<"@ATTRIBUTE class {accident, bomb, car, casualty, electricity, fire, fireBrigade, flood, gas, injury, paramedics, person, police, roadBlock}\n\n";
 
         fichierARFF<<"@DATA\n";
@@ -125,21 +150,24 @@ int main() {
                         label = "fireBrigade";
                     }
 
+
                     //Cropping de l'image
                     pair<pair<int,int>,cv::Mat> new_image = feature_size::extract(image);
                     cv::Mat cropped_image_mat = new_image.second;
                     std::string cropped_image = "../../TP_Reco/cropped_image.png";
                     cv::imwrite(cropped_image,cropped_image_mat);
 
+
                     //Génération des différentes zones de l'image et enregistrement dans le fichier temporaire "zoning"
                     vector<cv::Mat> zones = zoning::extract_zones(cropped_image,3);
-                    int i = 1;
+                    int k = 1;
                     for (cv::Mat zone : zones){
-                        nom = to_string(i);
-                        i++;
+                        nom = to_string(k);
+                        k++;
                         std::string path = "../../TP_Reco/zoning/zone_"+nom+".png";
                         cv::imwrite(path,zone);
                     }
+
 
                     //Stocke le nombre de pixels noirs de l'image entière puis dans chaque zone
                     int count = countPixel(cropped_image)[1];
@@ -150,29 +178,36 @@ int main() {
                         counts.push_back(a_count);
                     }
 
+
                     //Stocke la hauteur et la largeur
                     pair<int, int> size = new_image.first;
+
 
                     //Stocke l'aire de l'image
                     double area = air(image);
 
+
                     // Stocke les coordonnées du barycentre sous la forme d'un point
                     Point barycentre = reco_barycentre(cropped_image);
+                    std::cout<<to_string(i)<< ":" << " Avant Barycentre" <<std::endl;
 
                     vector<Point> barycentres;
                     for (int j = 1; j<10;j++){
                         std::string path = "../../TP_Reco/zoning/zone_"+ to_string(j)+".png";
+                        std::cout<<to_string(j)<< ":" << " Avant reconnaissance" <<std::endl;
                         Point a_barycentre = reco_barycentre (path);
-                        barycentre.push_back(a_barycentre);
+                        std::cout<<to_string(j)<< ":" << " Apres reconnaissance" <<std::endl;
+
+                        barycentres.push_back(a_barycentre);
                     }
-                    
+                    std::cout<<to_string(i)<< ":" << " Apres Barycentre" <<std::endl;
+
 
                     //Stocke dans une paire le nombre de cercle d'un côté et
                     // un vecteur contenant des array de taille 3 correspondant
                     // à la taille, la coord X et la coord Y de chaque cercle reconnu
                     //Nb de cercle max = 4
                     array<pair<int, array<int, 3>>,5> cercles = circles::extract_circles(cropped_image);
-                    //cout << "Cercles: " << cercles.first << "," << cercles.second << endl;
 
                     //Stockage des informations données par extract_circles des cercles présents pour chaque zone
                     vector<int> cercles_data ;
@@ -184,17 +219,31 @@ int main() {
                         cercles_data.push_back(cercles[i].second[2]);
                     }
 
+                    //Stockage des lignes présentes dans l'image ainsi que dans chaque zone
+                    array<array<float, 4>,6> extracted_lines = lines::extract_lines(cropped_image);
+
 
                     //Impression des informations récupérées pour chaque imagette dans le fichier ARFF
                     fichierARFF << count << "," << counts[0] << "," << counts[1] << "," << counts[2] << ","
                             << counts[3] << "," << counts[4] << "," << counts[5] << ","
                             << counts[6] << "," << counts[7] << "," << counts[8] << ","
                     << size.first << "," << size.second << ","<< area <<","<< barycentre.x << ","<< barycentre.y<<","<<
+                    barycentres[0].x << "," << barycentres[0].y << "," << barycentres[1].x << "," << barycentres[1].y << "," <<
+                    barycentres[2].x << "," << barycentres[2].y << "," << barycentres[3].x << "," << barycentres[3].y << "," <<
+                    barycentres[4].x << "," << barycentres[4].y << "," << barycentres[5].x << "," << barycentres[5].y << "," <<
+                    barycentres[6].x << "," << barycentres[6].y << "," << barycentres[7].x << "," << barycentres[7].y << "," <<
+                    barycentres[8].x << "," << barycentres[8].y << "," <<
                     cercles_data[0]<< "," << cercles_data[1] << "," << cercles_data[2] << "," << cercles_data[3] << "," <<
                     cercles_data[4]<< "," << cercles_data[5] << "," << cercles_data[6] << "," << cercles_data[7] << "," <<
                     cercles_data[8]<< "," << cercles_data[9] << "," << cercles_data[10] << "," << cercles_data[11] << "," <<
                     cercles_data[12]<< "," << cercles_data[13] << "," << cercles_data[14] << "," << cercles_data[15] << "," <<
                     cercles_data[16]<< "," << cercles_data[17] << "," << cercles_data[18] << "," << cercles_data[19] << "," <<
+                    extracted_lines[0][0]<< "," << extracted_lines[0][1]<< "," << extracted_lines[0][2]<< "," << extracted_lines[0][3]<< "," <<
+                    extracted_lines[1][0]<< "," << extracted_lines[1][1]<< "," << extracted_lines[1][2]<< "," << extracted_lines[1][3]<< "," <<
+                    extracted_lines[2][0]<< "," << extracted_lines[2][1]<< "," << extracted_lines[2][2]<< "," << extracted_lines[2][3]<< "," <<
+                    extracted_lines[3][0]<< "," << extracted_lines[3][1]<< "," << extracted_lines[3][2]<< "," << extracted_lines[3][3]<< "," <<
+                    extracted_lines[4][0]<< "," << extracted_lines[4][1]<< "," << extracted_lines[4][2]<< "," << extracted_lines[4][3]<< "," <<
+                    extracted_lines[5][0]<< "," << extracted_lines[5][1]<< "," << extracted_lines[5][2]<< "," << extracted_lines[5][3]<< "," <<
                     label<<endl;
                 }
             }

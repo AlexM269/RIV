@@ -4,6 +4,6 @@
 -- OpenCV STATIC: OFF
 -- Found OpenCV 4.5.5 in C:/Users/Alexandre DEPRUGNEY/Documents/4INFO/Traitement vidéo/Projet/OpenCV-MinGW-Build-OpenCV-4.5.5-x64/x64/mingw/lib
 -- You might need to add C:\Users\Alexandre DEPRUGNEY\Documents\4INFO\Traitement vidéo\Projet\OpenCV-MinGW-Build-OpenCV-4.5.5-x64\x64\mingw\bin to your PATH to be able to run your applications.
--- Configuring done (0.4s)
+-- Configuring done (0.2s)
 -- Generating done (0.0s)
 -- Build files have been written to: C:/Users/Alexandre DEPRUGNEY/Documents/GitHub/RIV/TP_Reco/cmake-build-debug-mingw

@@ -141,6 +141,7 @@ double air(const string& image){
 
 Point reco_barycentre(const string imName){
 
+
     // Load image
     Mat im = imread(imName);
     if(im.data == nullptr){
@@ -169,8 +170,10 @@ Point reco_barycentre(const string imName){
 
     // Dessine les contours sur l'image
     drawContours(im, contours, -1, cv::Scalar(0, 255, 0), 2);
+    std::cout<< "Blabla 4 "<<std::endl;
 
     Moments moments0 = moments(contours[0]);
+    std::cout<< "Blabla 5 "<<std::endl;
 
     double centerX;
     double centerY;
