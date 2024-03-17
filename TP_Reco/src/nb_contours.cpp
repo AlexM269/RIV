@@ -47,4 +47,5 @@ cv::Mat nb_contours (const std::string imName){
 
     std::cout << "Nombre de contours de l'imagette : "<<to_string(contours.size())<< std::endl;
 
+    return im;
 }

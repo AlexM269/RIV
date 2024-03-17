@@ -108,7 +108,7 @@ array<array<float, 4>,6> lines::extract_lines(const string& fileIm){
                 }
             }
             // Zone 5
-            if (milY > 250.0 / 3.0 && milX < 500.0 / 3.0) {
+            if (milY > 250.0 / 3.0 && milY < 500.0 / 3.0) {
                 if (len > lenMax[4]) {
                     lenMax[4] = len;
                     milXmax[4] = milX;

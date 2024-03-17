@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <algorithm>
 
 pair<int,int> extractSize(const string& fileIm){
     Mat imBase = imread(fileIm);
@@ -192,55 +193,7 @@ Point reco_barycentre(const string imName){
             centerX = im.cols / 2;
             centerY = im.rows / 2;
         }
-/*
-        Moments moments0 = moments(contours[0]);
 
-        std::cout<< "After moment" <<std::endl;
-
-
-        // Renvoie la valeur des moments calculés
-        //std::cout << "moments0.m10 : "<< to_string(moments0.m10) <<"; moments.m01 : " << to_string(moments0.m01) <<"; moments.m00 : " << to_string(moments0.m00) << std::endl;
-
-        if(moments0.m10!=0 && moments0.m01!=0 && moments0.m00 != 0){
-            // Calcule les coordonnées du centre de masse
-            centerX = moments0.m10 / moments0.m00;
-            centerY = moments0.m01 / moments0.m00;
-
-        }
-
-        else if((cv::moments(contours[1])).m10!=0 && (moments(contours[1])).m01!=0 && (moments(contours[1])).m00 != 0){
-            Moments moments1 = moments(contours[1]);
-            //Sinon, calcule le barycentre avec le deuxième contour capté
-            centerX = moments1.m10 / moments1.m00;
-            centerY = moments1.m01 / moments1.m00;
-        }
-        else if((moments(contours[2])).m10!=0 && (moments(contours[2])).m01!=0 && (moments(contours[2])).m00 != 0){
-            Moments moments2 = moments(contours[2]);
-            //Sinon, calcule le barycentre avec le troisième contour capté
-            centerX = moments2.m10 / moments2.m00;
-            centerY = moments2.m01 / moments2.m00;
-        }
-        else{
-            Moments moments3 = moments(contours[3]);
-
-            //Sinon, calcule le barycentre avec le troisième contour capté
-            if(!moments3.m00==0){
-                centerX = moments3.m10 / moments3.m00;
-                centerY = moments3.m01 / moments3.m00;
-            }
-                //Si le moment est toujours nul, on met le centre de masse au centre
-            else{
-                centerX = im.cols/2;
-                centerY = im.rows/2;
-            }
-        }
-
-    }
-    else{
-        centerX = 0;
-        centerY = 0;
-    }
-*/
     }
     // Enregistre le centre de masse dans res
     Point res = Point (centerX,centerY);
@@ -248,17 +201,43 @@ Point reco_barycentre(const string imName){
     return res;
 }
 
+/*
+vector<double> normalisation(const vector<double>& vec){
+    std::vector<double> res;
+    std::vector<double> new_vec;
+    std::copy_if(vec.begin(), vec.end(), std::back_inserter(new_vec), [](double num) { return num != -10; });
+    double moy = std::accumulate(new_vec.begin(),new_vec.end(),0.0)/new_vec.size();
+    double sum = 0;
+    int size_normalisation = 0;
+    for(double v : new_vec){
+        sum += pow( v - moy, 2 );
+        size_normalisation++;
+    }
+    double et = sqrt(sum/size_normalisation);
 
-vector<double> normalisation(const vector<int> vec){
+    for(double v : vec){
+        if(v!=-10){
+            res.push_back((v - moy)/et);
+        }
+        else {
+            res.push_back(v);
+        }
+    }
+
+    return res;
+}
+ */
+
+vector<double> normalisation(const vector<double>& vec){
     vector<double> res;
     double moy = accumulate(vec.begin(),vec.end(),0.0)/vec.size();
     double sum = 0;
-    for(int v : vec){
+    for(double v : vec){
         sum += pow( v - moy, 2 );
     }
     double et = sqrt(sum/vec.size());
 
-    for(int v : vec){
+    for(double v : vec){
         res.push_back((v - moy)/et);
     }
 

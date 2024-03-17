@@ -32,11 +32,12 @@ using namespace cv;
 int main() {
     int i = 0;
 
-    //const char* dossier = ".//..//out";
-    const char* dossier = ".//..//Exemples_icones";
+    //ICI : Préciser le dossier auquel on veut acceder
+    const char* dossier = ".//..//out";
+    //const char* dossier = ".//..//Exemples_icones";
     //const char* dossier = ".//..//final_cropped";
 
-    //Dans le cas du dossier des images de test, on renomme les fichiers des images pour enlever le ".png" en trop
+    //Dans le cas du dossier des images de test, on renomme les fichiers des images pour enlever le ".png" en trop puis on les met au même format que nos images
     //rename_file(dossier);
     //addBlank(dossier);
 
@@ -45,7 +46,7 @@ int main() {
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFFex.arff");
+    std::ofstream fichierARFF("./../FichierARFF.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
@@ -148,12 +149,13 @@ int main() {
                     string label = nom.substr(0,nom.size()-15);
 
                     //Si le label est Road Block, concatener les deux mots pour le .ARFF pour former "roadBlock"
-                    if(std::equal(label.begin(), label.end(),"road block")){
+                    if(label.find("road block") != std::string::npos) {
                         label = "roadBlock";
                     }
 
+
                     //Si le label est Fire brigade, concatener les deux mots pour le .ARFF pour former "fireBrigade"
-                    if(std::equal(label.begin(), label.end(),"fire brigade")){
+                    if(label.find("fire brigade") != std::string::npos) {
                         label = "fireBrigade";
                     }
 
@@ -230,11 +232,59 @@ int main() {
                     array<array<float, 4>,6> extracted_lines = lines::extract_lines(cropped_image);
 
 
-                    //Normalisation de certaines données
+                    //Normalisation des données
+                    vector<double> to_normalize;
+                    to_normalize.push_back(count);
+                    for(int j = 0; j<9; j++){
+                        to_normalize.push_back(counts[j]);
+                    }
+                    to_normalize.push_back(size.first);
+                    to_normalize.push_back(size.second);
+                    to_normalize.push_back(area);
+                    to_normalize.push_back(barycentre.x);
+                    to_normalize.push_back(barycentre.y);
+                    for(int j = 0; j<barycentres.size(); j++){
+                        to_normalize.push_back(barycentres[j].x);
+                        to_normalize.push_back(barycentres[j].y);
+                    }
+
+                    for(int elt : cercles_data){
+                        to_normalize.push_back(elt);
+                    }
 
 
+                    for(int j = 0; j<6; j++){
+                        for(int l = 0; l<4; l++){
+                            to_normalize.push_back(extracted_lines[j][l]);
+                        }
+                    }
+
+
+
+                    //Affichage des datas avant normalisation
+                    /*
+                    for (int j = 0; j < to_normalize.size(); ++j) {
+                        std::cout << to_normalize[j] << " , ";
+                    }
+                    std::cout << std::endl;
+                    */
+
+                    vector <double> normalized_data = normalisation(to_normalize);
+                    //Affichage des datas normalisées
+                    /*
+                    for (int j = 0; j < normalized_data.size(); ++j) {
+                        std::cout << normalized_data[j] << " , ";
+                    }
+                    std::cout << std::endl;
+                    */
 
                     //Impression des informations récupérées pour chaque imagette dans le fichier ARFF
+                    for (double elt : normalized_data){
+                        fichierARFF<< elt << ",";
+                    }
+                    fichierARFF << label <<endl;
+
+                    /*
                     fichierARFF << count << "," << counts[0] << "," << counts[1] << "," << counts[2] << ","
                             << counts[3] << "," << counts[4] << "," << counts[5] << ","
                             << counts[6] << "," << counts[7] << "," << counts[8] << ","
@@ -255,7 +305,7 @@ int main() {
                     extracted_lines[3][0]<< "," << extracted_lines[3][1]<< "," << extracted_lines[3][2]<< "," << extracted_lines[3][3]<< "," <<
                     extracted_lines[4][0]<< "," << extracted_lines[4][1]<< "," << extracted_lines[4][2]<< "," << extracted_lines[4][3]<< "," <<
                     extracted_lines[5][0]<< "," << extracted_lines[5][1]<< "," << extracted_lines[5][2]<< "," << extracted_lines[5][3]<< "," <<
-                    label<<endl;
+                    label<<endl;*/
                 }
             }
         }

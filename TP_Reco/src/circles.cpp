@@ -23,11 +23,11 @@ Retourne vecteur de 5 paires correspondant aux 5 zones avec (nombre de cercles, 
 array<pair<int, array<int, 3>>,5> circles::extract_circles(const string& fileIm) {
     // Initialisation du tuple avec -1 partout (val par défaut si pas de cercle)
     std::array<std::pair<int, std::array<int, 3>>, 5> resCercles{
-            std::make_pair(-1, std::array<int, 3>{-1, -1, -1}),
-            std::make_pair(-1, std::array<int, 3>{-1, -1, -1}),
-            std::make_pair(-1, std::array<int, 3>{-1, -1, -1}),
-            std::make_pair(-1, std::array<int, 3>{-1, -1, -1}),
-            std::make_pair(-1, std::array<int, 3>{-1, -1, -1})
+            std::make_pair(-10, std::array<int, 3>{-10, -10, -10}),
+            std::make_pair(-10, std::array<int, 3>{-10, -10, -10}),
+            std::make_pair(-10, std::array<int, 3>{-10, -10, -10}),
+            std::make_pair(-10, std::array<int, 3>{-10, -10, -10}),
+            std::make_pair(-10, std::array<int, 3>{-10, -10, -10})
     };
 
 
@@ -46,9 +46,9 @@ array<pair<int, array<int, 3>>,5> circles::extract_circles(const string& fileIm)
     cv::HoughCircles(image, cercles, cv::HOUGH_GRADIENT, 1, image.rows / 3, 100, 18, 10, image.rows / 2);
 
     array<int, 5> nbCercles {0,0,0,0,0};
-    array<int, 5> rayonsMoy {-1,-1,-1,-1,-1};
-    array<int, 5> centresXmoy {-1,-1,-1,-1,-1};
-    array<int, 5> centresYmoy {-1,-1,-1,-1,-1};
+    array<int, 5> rayonsMoy {-10,-10,-10,-10,-10};
+    array<int, 5> centresXmoy {-10,-10,-10,-10,-10};
+    array<int, 5> centresYmoy {-10,-10,-10,-10,-10};
     // Parcours du tableau des cercles détéctés
    for (int i = 0; i < cercles.size(); ++i) {
         int radius = cvRound(cercles[i][2]);
