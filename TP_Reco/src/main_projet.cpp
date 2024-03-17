@@ -27,23 +27,25 @@ using namespace cv;
 #include "zoning.h"
 #include "lines.h"
 #include "rename_file.hpp"
+#include "add_blank.hpp"
 
 int main() {
     int i = 0;
 
     //const char* dossier = ".//..//out";
-    //const char* dossier = ".//..//Exemples_icones";
-    const char* dossier = ".//..//final_cropped";
+    const char* dossier = ".//..//Exemples_icones";
+    //const char* dossier = ".//..//final_cropped";
 
     //Dans le cas du dossier des images de test, on renomme les fichiers des images pour enlever le ".png" en trop
-    rename_file(dossier);
+    //rename_file(dossier);
+    //addBlank(dossier);
 
 
     // Ouvrir le dossier
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFFtest.arff");
+    std::ofstream fichierARFF("./../FichierARFFex.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
@@ -228,6 +230,10 @@ int main() {
                     array<array<float, 4>,6> extracted_lines = lines::extract_lines(cropped_image);
 
 
+                    //Normalisation de certaines données
+
+
+
                     //Impression des informations récupérées pour chaque imagette dans le fichier ARFF
                     fichierARFF << count << "," << counts[0] << "," << counts[1] << "," << counts[2] << ","
                             << counts[3] << "," << counts[4] << "," << counts[5] << ","
@@ -261,48 +267,5 @@ int main() {
 
     //termine le programme lorsqu'une touche est frappee
     waitKey(0);
-    return EXIT_SUCCESS;}
-
-/*
-int main (void){
-    // Spécifie le chemin du dossier à parcourir
-    const char* dossier = ".//..//Exemples_icones";
-
-    // Ouvre le dossier
-    DIR* dir = opendir(dossier);
-
-    if (dir) {
-        // Parcoure les fichiers dans le dossier
-        struct dirent* entry;
-        while ((entry = readdir(dir)) != nullptr) {
-            //extrait le nom du fichier actuel dans la variable nom
-            std::string nom = entry->d_name;
-
-            // Ignore les répertoires spéciaux "." et ".."
-            if(nom.size()>3){
-                // Crée le chemin du nouveau fichier dans un dossier différent
-                string outputPath = "../Exemples_resultat/" + nom;
-
-                // Cree une image im où on ajoute un barycentre à l'image
-                cv::Mat im = reco_barycentre(".//..//Exemples_icones/" + nom);
-                // Enregistre l'image avec le centre de masse
-                cv::imwrite(outputPath, im);
-            }
-        }
-        // Ferme le dossier
-        closedir(dir);
-    } else {
-        std::cerr << "Erreur lors de l'ouverture du dossier2." << std::endl;
-        return 1;
-    }
-
-    //Test de la reconnaissance de lignes
-    std::string imName = ".//..//accident_004_01_3_3.jpg";
-    cv::Mat result = reco_lignes (imName);
-
-
-    //termine le programme lorsqu'une touche est frappee
-    waitKey(0);
     return EXIT_SUCCESS;
 }
-*/

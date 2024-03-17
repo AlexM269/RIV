@@ -28,7 +28,9 @@ add_executable(TP-Reco
         include/lines.h
         src/lines.cpp
         include/rename_file.hpp
-        src/rename_file.cpp)
+        src/rename_file.cpp
+        include/add_blank.hpp
+        src/add_blank.cpp)
 
 target_link_libraries(TP-Reco ${OpenCV_LIBS})
 
