@@ -17,7 +17,6 @@ add_executable(TP-Reco
         src/redresser_image.cpp
         include/reco_barycentre.hpp
         src/reco_barycentre.cpp
-        src/reco_lignes.cpp
         src/nb_contours.cpp
         include/feature_extraction.hpp
         src/feature_extraction.cpp

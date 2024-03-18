@@ -33,9 +33,9 @@ int main() {
     int i = 0;
 
     //ICI : Préciser le dossier auquel on veut acceder
-    const char* dossier = ".//..//out";
+    //const char* dossier = ".//..//out";
     //const char* dossier = ".//..//Exemples_icones";
-    //const char* dossier = ".//..//final_cropped";
+    const char* dossier = ".//..//final_cropped";
 
     //Dans le cas du dossier des images de test, on renomme les fichiers des images pour enlever le ".png" en trop puis on les met au même format que nos images
     //rename_file(dossier);
@@ -46,7 +46,7 @@ int main() {
     DIR* dir = opendir(dossier);
 
     // Ouverture du fichier en mode écriture (creation)
-    std::ofstream fichierARFF("./../FichierARFF.arff");
+    std::ofstream fichierARFF("./../FichierARFFtest.arff");
     if (fichierARFF.is_open()) {
 
         fichierARFF<<"@RELATION ../FichierARFF\n\n";
@@ -247,65 +247,23 @@ int main() {
                         to_normalize.push_back(barycentres[j].x);
                         to_normalize.push_back(barycentres[j].y);
                     }
-
                     for(int elt : cercles_data){
                         to_normalize.push_back(elt);
                     }
-
-
                     for(int j = 0; j<6; j++){
                         for(int l = 0; l<4; l++){
                             to_normalize.push_back(extracted_lines[j][l]);
                         }
                     }
 
-
-
-                    //Affichage des datas avant normalisation
-                    /*
-                    for (int j = 0; j < to_normalize.size(); ++j) {
-                        std::cout << to_normalize[j] << " , ";
-                    }
-                    std::cout << std::endl;
-                    */
-
                     vector <double> normalized_data = normalisation(to_normalize);
-                    //Affichage des datas normalisées
-                    /*
-                    for (int j = 0; j < normalized_data.size(); ++j) {
-                        std::cout << normalized_data[j] << " , ";
-                    }
-                    std::cout << std::endl;
-                    */
+
 
                     //Impression des informations récupérées pour chaque imagette dans le fichier ARFF
                     for (double elt : normalized_data){
                         fichierARFF<< elt << ",";
                     }
                     fichierARFF << label <<endl;
-
-                    /*
-                    fichierARFF << count << "," << counts[0] << "," << counts[1] << "," << counts[2] << ","
-                            << counts[3] << "," << counts[4] << "," << counts[5] << ","
-                            << counts[6] << "," << counts[7] << "," << counts[8] << ","
-                    << size.first << "," << size.second << ","<< area <<","<< barycentre.x << ","<< barycentre.y<<","<<
-                    barycentres[0].x << "," << barycentres[0].y << "," << barycentres[1].x << "," << barycentres[1].y << "," <<
-                    barycentres[2].x << "," << barycentres[2].y << "," << barycentres[3].x << "," << barycentres[3].y << "," <<
-                    barycentres[4].x << "," << barycentres[4].y << "," << barycentres[5].x << "," << barycentres[5].y << "," <<
-                    barycentres[6].x << "," << barycentres[6].y << "," << barycentres[7].x << "," << barycentres[7].y << "," <<
-                    barycentres[8].x << "," << barycentres[8].y << "," <<
-                    cercles_data[0]<< "," << cercles_data[1] << "," << cercles_data[2] << "," << cercles_data[3] << "," <<
-                    cercles_data[4]<< "," << cercles_data[5] << "," << cercles_data[6] << "," << cercles_data[7] << "," <<
-                    cercles_data[8]<< "," << cercles_data[9] << "," << cercles_data[10] << "," << cercles_data[11] << "," <<
-                    cercles_data[12]<< "," << cercles_data[13] << "," << cercles_data[14] << "," << cercles_data[15] << "," <<
-                    cercles_data[16]<< "," << cercles_data[17] << "," << cercles_data[18] << "," << cercles_data[19] << "," <<
-                    extracted_lines[0][0]<< "," << extracted_lines[0][1]<< "," << extracted_lines[0][2]<< "," << extracted_lines[0][3]<< "," <<
-                    extracted_lines[1][0]<< "," << extracted_lines[1][1]<< "," << extracted_lines[1][2]<< "," << extracted_lines[1][3]<< "," <<
-                    extracted_lines[2][0]<< "," << extracted_lines[2][1]<< "," << extracted_lines[2][2]<< "," << extracted_lines[2][3]<< "," <<
-                    extracted_lines[3][0]<< "," << extracted_lines[3][1]<< "," << extracted_lines[3][2]<< "," << extracted_lines[3][3]<< "," <<
-                    extracted_lines[4][0]<< "," << extracted_lines[4][1]<< "," << extracted_lines[4][2]<< "," << extracted_lines[4][3]<< "," <<
-                    extracted_lines[5][0]<< "," << extracted_lines[5][1]<< "," << extracted_lines[5][2]<< "," << extracted_lines[5][3]<< "," <<
-                    label<<endl;*/
                 }
             }
         }

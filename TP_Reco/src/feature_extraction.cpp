@@ -106,7 +106,6 @@ vector<int> countPixel( const string& image) {
 
 double air(const string& image){
     Mat img = imread(image, IMREAD_GRAYSCALE);
-    //imshow("image de base",img);
 
     // Binarise l'image à l'aide de la méthode d'Otsu
     Mat binary;
@@ -115,7 +114,6 @@ double air(const string& image){
     // Inverse l'image binaire
     cv::bitwise_not(binary, binary);
 
-    //imshow("binary",binary);
 
     // Trouve les contours dans l'image binarisée
     vector<vector<Point>> contours;
@@ -129,14 +127,7 @@ double air(const string& image){
     for(int i = 0; i < contours.size(); i++) {
         area += cv::contourArea(contours[i]);
     }
-    /*Mat drawing = Mat::zeros(binary.size(), CV_8UC3);
-    for(int i = 0; i < contours.size(); i++) {
-        Scalar color_contours = Scalar(0, 255, 0); // green - color for contours
-        // draw ith contour
-        drawContours(drawing, contours, i, color_contours, 1, 8, vector<Vec4i>(), 0, Point());
-        imshow("drawing contour", drawing);
 
-    }*/
     return area;
 }
 
